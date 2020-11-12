@@ -41,4 +41,5 @@ def makeSomething(zadanie):
 		talk("Меня зовут Сири")
 
 while True:
-	makeSomething(command())
+	makeSomething(command()
+print("Даров"))
