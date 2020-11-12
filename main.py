@@ -42,3 +42,4 @@ def makeSomething(zadanie):
 
 while True:
 	makeSomething(command()
+#sss
