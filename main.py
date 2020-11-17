@@ -17,12 +17,13 @@ def listener():
 
     with sr.Microphone() as source:
         talk("Говорите")
-        r.pause_threshold = 1
+        r.pause_threshold = 0.5
         r.adjust_for_ambient_noise(source, duration=1)
         audio = r.listen(source)
 
     try:
         task = r.recognize_google(audio, language="ru-RU").lower()
+
     except sr.UnknownValueError:
         talk("Я вас не поняла")
         task = listener()
@@ -31,35 +32,20 @@ def listener():
 
 
 def command(task):
-    for key, value in libcmd.commands.items():
-        if task == key:
-            if 'сайт' in task:
+    if 'сайт' in task:
+        for key, value in libcmd.websites.items():
+            if task == key:
+                talk('выполнено')
                 webbrowser.open(value)
 
-            elif 'файл' in task:
+    elif 'файл' in task:
+        for key, value, in libcmd.programs.items():
+            if task == key:
+                talk('выполнено')
                 os.startfile(value)
-
 
 while True:
     command(listener())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
