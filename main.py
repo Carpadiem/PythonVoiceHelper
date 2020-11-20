@@ -3,6 +3,8 @@ import os
 import webbrowser
 import pyttsx3
 import libcommands as libcmd
+import pyautogui as pag
+
 
 def talk(words):
     engine = pyttsx3.init()
@@ -32,6 +34,8 @@ def listener():
 
 
 def command(task):
+
+    # open-system
     if 'сайт' in task:
         for key, value in libcmd.websites.items():
             if task == key:
@@ -44,22 +48,11 @@ def command(task):
                 talk('выполнено')
                 os.startfile(value)
 
+    # focus imitation
+    for key, value in libcmd.buttons.items():
+        if task == key:
+            pag.press(value)
+
+
 while True:
     command(listener())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
