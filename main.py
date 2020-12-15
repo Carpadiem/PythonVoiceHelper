@@ -4,6 +4,9 @@ import webbrowser
 import pyttsx3
 import libcommands as libcmd
 import pyautogui as pag
+import lang_translator as translator
+import weather
+import mathfuncs as mf
 
 
 def talk(words):
@@ -34,6 +37,7 @@ def listener():
 
 
 def command(task):
+    print("u say: " + task)
 
     # open-system
     if 'сайт' in task:
@@ -47,6 +51,51 @@ def command(task):
             if task == key:
                 talk('выполнено')
                 os.startfile(value)
+
+    elif 'добавь команду' in task:
+        print('cmd:cancel - отмена операции')
+        cmdtype = input("Тип команды: ")  # f-open, b-open
+        cmdname = input("Команда: ")
+        cmdvalue = input("Значение команды: ")
+
+        if cmdtype == "f-open":
+            libcmd.programs.update({cmdname: cmdvalue})
+
+        elif cmdtype == "b-open":
+            libcmd.websites.update({cmdname: cmdvalue})
+
+    elif 'удали команду' in task:
+        print('cmd:cancel - отмена операции')
+        cmdtype = input("Тип команды: ")
+        cmdname = input("Команда: ")
+
+        if cmdtype == "f-open":
+            libcmd.programs.pop(cmdname)
+
+        elif cmdtype == "b-open":
+            libcmd.websites.pop(cmdname)
+
+    elif 'погода' in task:
+        cityname = str(task).replace('погода ', '')
+        cityname_translated = translator.translate(cityname, 'en')
+
+        print(cityname_translated)
+
+        weather.city = str("https://yandex.ru/pogoda/" + cityname_translated)
+        weather.temp_online()
+        weather.weather_online()
+
+    elif 'посчитай' in task:
+        formattask = str(task).replace('посчитай ', '')
+
+        if 'плюс' in formattask:
+            first = formattask[formattask.find('плюс') + 5:]
+            second = formattask[0:formattask.find('плюс') - 1]
+
+            format_first = mf.translate(first)
+            format_second = mf.translate(second)
+
+            talk("ответ " + str(mf.plus(format_first, format_second)))
 
     # focus imitation
     for key, value in libcmd.buttons.items():
